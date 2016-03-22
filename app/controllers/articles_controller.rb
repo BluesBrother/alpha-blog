@@ -29,19 +29,34 @@ class ArticlesController < ApplicationController
     #return # It is not an error to return early from a method
 
     @article = Article.new(article_params) # Create a new instance of Article initialized with values from the web form
-    @article.save # Save the new article to the database
-    redirect_to articles_show(@article) # Redirect to show with the new article to provide the response...
+
+    if @article.save # Save the new article to the database. Returns true if successful, false otherwise.
+      flash[:notice] = 'New article was successfully created'
+      # Re-direct to the show method to display the newly-created article. If we don't re-direct, Ruby will attempt to
+      # return a response view based on the method name (create.html.erb).
+      redirect_to article_path(@article) # article_path is a helper method; the "article" prefix is found by rake routes
+    else # Article was not successfully saved
+      render 'new' # Simply re-renders the same view, but this time, error messages will be added
+    end
 
   end
 
-  # This is a private (local) method used to "white-list" the parameters in the hash.
+  # Display a given article by ID
+
+  def show
+
+    @article = Article.find(params[:id]) # Fetch the article by ID
+
+  end
+
+  # This is a private (local) method used to "white-list" the parameters in the hash so they can be extracted and used
+  # as parameters to create a new Article.
 
   private
   def article_params
-    xyz = params.require(:article).permit(:title, :description)
-    render plain: xyz
-    puts xyz
-    return xyz
+
+    params.require(:article).permit(:title, :description)
+
   end
 
 

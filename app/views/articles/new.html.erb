@@ -1,6 +1,22 @@
 
 <h1>Create a New Article</h1>
 
+<% if @article.errors.any? %>
+
+  <p><span style="color:red;font-weight:bold;">Please correct the following errors:</span></p>
+
+  <ul>
+
+    <% @article.errors.full_messages.each do |msg| %>
+
+      <li><%= msg %></li>
+
+    <% end %>
+
+  </ul>
+
+<% end %>
+
 
 <%= form_for @article do |f| %>
 
