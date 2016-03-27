@@ -1,6 +1,16 @@
 
 class ArticlesController < ApplicationController
 
+  # List all articles currently in database
+
+  def index
+
+    @articles = Article.all # Fetch all articles in the database
+
+
+
+  end
+
   # When path articles/new is entered, the controller method "new" gets control. It creates a new Article object and assigns it to
   # the instance variable, @article. Then, by default, Rails will display a response view named, "new" (articles/new.html.erb).
 
@@ -36,7 +46,7 @@ class ArticlesController < ApplicationController
       # return a response view based on the method name (create.html.erb).
       redirect_to article_path(@article) # article_path is a helper method; the "article" prefix is found by rake routes
     else # Article was not successfully saved
-      render 'new' # Simply re-renders the same view, but this time, error messages will be added
+      render 'new' # Re-renders the New Article view (new.htlm.erb), but this time, error messages will be added
     end
 
   end
@@ -45,7 +55,48 @@ class ArticlesController < ApplicationController
 
   def show
 
-    @article = Article.find(params[:id]) # Fetch the article by ID
+    @article = Article.find(params[:id]) # Fetch the article to be displayed by ID
+
+  end
+
+  # Edit an existing article by ID
+
+  def edit
+
+    @article = Article.find(params[:id]) # Fetch the article to be edited by ID
+
+  end
+
+  # When the user edits an existing article and clicks Update Article, the controller method "update" receives
+  # control (articles/update) with a hash called "params". The hash contains the input fields from the template, keyed
+  # by field name (:title, :description).
+
+  # The parameters used to initialize the new Article are extracted from the hash. Note that the parameters cannot be used
+  # directly from the hash; first, they must be white-listed.
+
+  # Finally, the new Article is saved to the database.
+
+  # By default, when the create method exits, Ruby will attempt to render a view named, articles/create.html.erb, which
+  # doesn't exist.
+
+  def update
+
+    #render plain: params[:article].inspect # Uncomment to display input parameters from web page
+
+    #return # It is not an error to return early from a method
+
+    @article = Article.find(params[:id]) # Fetch the article to be updated by ID
+
+    # We must specify the parameters to be updated (we don't want to update EVERY parameter. So we "whitelist" parameters
+    # by explicitly selecting them for update.
+    if @article.update(article_params) # Update the article in the database. Returns true if successful, false otherwise.
+      flash[:notice] = 'Article was successfully updated'
+      # Re-direct to the show method to display the updated article. If we don't re-direct, Ruby will attempt to
+      # return a response view based on the method name (update.html.erb).
+      redirect_to article_path(@article) # article_path is a helper method; the "article" prefix is found by rake routes
+    else # Article was not successfully saved
+      render 'edit' # Re-render the Edit view (edit.html.erb), but this time, error messages will be added
+    end
 
   end
 
