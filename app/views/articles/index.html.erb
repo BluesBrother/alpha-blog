@@ -10,6 +10,7 @@
   <tr>
     <th>View</th>
     <th>Edit</th>
+    <th>Delete</th>
     <th style="text-align:left;">Title</th>
     <th style="text-align:left;">Description</th>
   </tr>
@@ -19,6 +20,7 @@
     <tr>
       <td><%= link_to 'View', article_path(article) %></td>
       <td><%= link_to 'Edit', edit_article_path(article) %></td>
+      <td><%= link_to 'Delete', article_path(article), method: :delete, data: {confirm: 'Are you sure?'} %></td> <!-- We have to explicity direct Rails to the controller's delete method -->
       <td><%= article.title %></td>
       <td><%= article.description %></td>
     </tr>

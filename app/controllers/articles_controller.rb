@@ -100,6 +100,20 @@ class ArticlesController < ApplicationController
 
   end
 
+  # Delete an existing article
+
+  def destroy
+
+    @article = Article.find(params[:id]) # Fetch the article to be deleted by ID
+
+    @article.destroy # Remove the article from the database
+
+    flash[:notice] = 'Article successfully deleted'
+
+    redirect_to articles_path # Return to the listing of all Articles
+
+  end
+
   # This is a private (local) method used to "white-list" the parameters in the hash so they can be extracted and used
   # as parameters to create a new Article.
 
