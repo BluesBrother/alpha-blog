@@ -20,7 +20,7 @@
     <tr>
       <td><%= link_to 'View', article_path(article) %></td>
       <td><%= link_to 'Edit', edit_article_path(article) %></td>
-      <td><%= link_to 'Delete', article_path(article), method: :delete, data: {confirm: 'Are you sure?'} %></td> <!-- We have to explicity direct Rails to the controller's delete method -->
+      <td><%= link_to 'Delete', article_path(article), method: :delete, data: {confirm: "Are you sure you want to delete the article, \"#{article.title}\"?"} %></td> <!-- We have to explicity direct Rails to the controller's delete method -->
       <td><%= article.title %></td>
       <td><%= article.description %></td>
     </tr>

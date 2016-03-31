@@ -1,13 +1,16 @@
 
 class ArticlesController < ApplicationController
 
+  # The following statement will invoke the find_article method BEFORE the specified actions begin. In each case (edit,
+  # update, show, destroy) we must first fetch the article to be operated upon.
+
+   before_action :find_article, only: [:show, :edit, :update, :destroy]
+
   # List all articles currently in database
 
   def index
 
     @articles = Article.all # Fetch all articles in the database
-
-
 
   end
 
@@ -55,15 +58,11 @@ class ArticlesController < ApplicationController
 
   def show
 
-    @article = Article.find(params[:id]) # Fetch the article to be displayed by ID
-
   end
 
   # Edit an existing article by ID
 
   def edit
-
-    @article = Article.find(params[:id]) # Fetch the article to be edited by ID
 
   end
 
@@ -85,8 +84,6 @@ class ArticlesController < ApplicationController
 
     #return # It is not an error to return early from a method
 
-    @article = Article.find(params[:id]) # Fetch the article to be updated by ID
-
     # We must specify the parameters to be updated (we don't want to update EVERY parameter. So we "whitelist" parameters
     # by explicitly selecting them for update.
     if @article.update(article_params) # Update the article in the database. Returns true if successful, false otherwise.
@@ -104,8 +101,6 @@ class ArticlesController < ApplicationController
 
   def destroy
 
-    @article = Article.find(params[:id]) # Fetch the article to be deleted by ID
-
     @article.destroy # Remove the article from the database
 
     flash[:notice] = 'Article successfully deleted'
@@ -117,7 +112,16 @@ class ArticlesController < ApplicationController
   # This is a private (local) method used to "white-list" the parameters in the hash so they can be extracted and used
   # as parameters to create a new Article.
 
-  private
+  private # "private" introduces a section containing methods that are private to the class
+
+  def find_article
+
+    @article = Article.find(params[:id]) # Fetch the article by ID
+
+  end
+
+  # Whitelist article attributes title, description
+
   def article_params
 
     params.require(:article).permit(:title, :description)
