@@ -1,19 +1,23 @@
 
 <h1>List of All Articles</h1>
 
-<b><%= link_to "Create New Article", new_article_path %></b>
+<b><%= link_to 'Create New Article', new_article_path %></b>
 
 <p></p>
 
 <table>
 
-  <tr>
-    <th>View</th>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th style="text-align:left;">Title</th>
-    <th style="text-align:left;">Description</th>
-  </tr>
+  <% if @articles.any? %>
+
+      <tr>
+        <th>View</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th style="text-align:left;">Title</th>
+        <th style="text-align:left;">Description</th>
+      </tr>
+
+  <% end %>
 
   <% @articles.each do |article| %>
 
